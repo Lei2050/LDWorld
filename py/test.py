@@ -6,6 +6,10 @@ import numpy as np
 # print(points)
 # print(len(points))
 
+t = np.linspace(0, 1, 256)
+print(len(t))
+exit(1)
+
 a = [[1, 2, 3],
      [4, 5, 6],
      [7, 8, 9]]

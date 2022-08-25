@@ -481,15 +481,17 @@ def bezier(x1, y1, x2, y2, a):
 from scipy.interpolate import interp1d
 
 def bezier_lut(x1, y1, x2, y2, a):
-    t = np.linspace(0, 1, 256)
+    t = np.linspace(0, 1, 256) #[0, 1]之间采样256个数据，一维数组
     f = bezier(x1, y1, x2, y2, a)
     curve = np.array([f(t_) for t_ in t])
-
+    #根据给定的数据，一系列xy一一对应，计算一个插值函数，返回一个函数。
+    #类似于从给定一系列数据，拟合出一个y=f(x)，返回f。
     return interp1d(*curve.T)
 
 def filter_map(h_map, smooth_h_map, x1, y1, x2, y2, a, b):
     f = bezier_lut(x1, y1, x2, y2, a)
     output_map = b*h_map + (1-b)*smooth_h_map
+    #这里是经过拟合的三阶贝塞尔曲线，通过老的噪声值求出对应新的噪声值，也就是高度。
     output_map = f(output_map.clip(0, 1))
     return output_map
 
